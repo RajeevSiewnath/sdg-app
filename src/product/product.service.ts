@@ -1,0 +1,43 @@
+import { Injectable, NotImplementedException } from '@nestjs/common';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Product } from './entities/product.entity';
+
+@Injectable()
+export class ProductService {
+  constructor(@InjectRepository(Product) private repo: Repository<Product>) {}
+
+  create(createProductDto: CreateProductDto) {
+    throw new NotImplementedException();
+  }
+
+  async findAll() {
+    const relations = ['alignments', 'alignments.sdg', 'company'];
+
+    const treeRepo = this.repo.manager.getTreeRepository(Product);
+    const roots = await treeRepo.findRoots({
+      relations,
+    });
+    return Promise.all(
+      roots.map((root) =>
+        treeRepo.findDescendantsTree(root, {
+          relations,
+        }),
+      ),
+    );
+  }
+
+  findOne(id: number) {
+    throw new NotImplementedException();
+  }
+
+  update(id: number, updateProductDto: UpdateProductDto) {
+    throw new NotImplementedException();
+  }
+
+  remove(id: number) {
+    throw new NotImplementedException();
+  }
+}
