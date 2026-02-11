@@ -17,16 +17,27 @@ export class ProductService {
     const relations = ['alignments', 'alignments.sdg', 'company'];
 
     const treeRepo = this.repo.manager.getTreeRepository(Product);
+
     const roots = await treeRepo.findRoots({
       relations,
     });
-    return Promise.all(
-      roots.map((root) =>
-        treeRepo.findDescendantsTree(root, {
-          relations,
-        }),
-      ),
+
+    const trees = await Promise.all(
+      roots.map((root) => treeRepo.findDescendantsTree(root, { relations })),
     );
+
+    const attachParent = (product: Product, parent: Product | null = null) => {
+      product.parent = parent || undefined;
+      if (product.children) {
+        for (const child of product.children) {
+          attachParent(child, product);
+        }
+      }
+    };
+
+    trees.forEach((root) => attachParent(root));
+
+    return trees;
   }
 
   findOne(id: number) {

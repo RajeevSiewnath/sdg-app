@@ -11,6 +11,10 @@
     "shared"
   ],
   "devDependencies": {
+    "@types/randomcolor": "^0.5.9",
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "randomcolor": "^0.6.2"
   }
 }

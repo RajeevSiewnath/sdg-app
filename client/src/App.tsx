@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CompanyView from "./CompanyView";
 
 function App() {
   const [data, setData] = useState<any>();
@@ -64,8 +65,7 @@ function App() {
           >
             Back
           </div>
-          <h1 className="text-xl font-bold">{company.name}</h1>
-          <div className="">Company data comes here</div>
+          <CompanyView company={company} />
         </div>
       )}
     </div>

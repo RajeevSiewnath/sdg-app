@@ -31,13 +31,28 @@ export class CompanyService {
         },
         relations,
       });
-      await Promise.all(
+      const trees = await Promise.all(
         roots.map((root) =>
           treeRepo.findDescendantsTree(root, {
             relations,
           }),
         ),
       );
+
+      const attachParent = (
+        product: Product,
+        parent: Product | null = null,
+      ) => {
+        product.parent = parent || undefined;
+        if (product.children) {
+          for (const child of product.children) {
+            attachParent(child, product);
+          }
+        }
+      };
+
+      trees.forEach((root) => attachParent(root));
+
       company.products = roots;
     }
 
