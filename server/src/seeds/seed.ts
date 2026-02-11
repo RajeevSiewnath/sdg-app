@@ -39,7 +39,7 @@ async function seed() {
       const product = productRepo.create();
       product.weight = faker.number.int({ min: 1, max: 100 });
       product.name = faker.commerce.product();
-      product.company = company;
+      product.company = Promise.resolve(company);
       product.parent =
         Math.random() < 0.1 || randomParents.length === 0
           ? undefined
@@ -53,7 +53,7 @@ async function seed() {
   for (const product of products) {
     const sdgSet = faker.helpers.arrayElements(sdgs, {
       min: 0,
-      max: 3,
+      max: 1,
     });
     for (const sdgEntry of sdgSet) {
       const alignment = alignmentRepo.create();

@@ -13,6 +13,13 @@ export class ProductDto {
   name: string;
 
   @Expose()
+  consolidatedWeight: number;
+
+  @Expose()
+  @Type(() => AlignmentDto)
+  consolidatedAlignment: AlignmentDto;
+
+  @Expose()
   @Type(() => ProductDto)
   children: ProductDto[];
 
@@ -20,7 +27,6 @@ export class ProductDto {
   @Type(() => AlignmentDto)
   alignments: AlignmentDto[];
 
-  @Expose()
   @Type(() => CompanyDto)
-  company: CompanyDto;
+  company?: CompanyDto;
 }
